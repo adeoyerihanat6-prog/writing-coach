@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { useOnboarding } from '@/context/OnboardingContext';
 import { colors } from '@/theme/colors';
 
 const goals = [
@@ -14,7 +14,7 @@ const goals = [
 ];
 
 export default function GoalsScreen() {
-  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const { selectedGoals, setSelectedGoals } = useOnboarding();
 
   function toggleGoal(goal: string) {
     setSelectedGoals((currentGoals) => {
