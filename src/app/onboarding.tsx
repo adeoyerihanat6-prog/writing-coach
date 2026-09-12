@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { colors } from '@/theme/colors';
 
@@ -11,6 +12,13 @@ export default function OnboardingScreen() {
         You don't need to be a "good writer" to start.
         You just need something to say.
       </Text>
+
+      <Pressable
+        style={styles.button}
+        onPress={() => router.push('/goals')}
+      >
+        <Text style={styles.buttonText}>Let's begin</Text>
+      </Pressable>
     </View>
   );
 }
@@ -34,5 +42,20 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 26,
     color: colors.dark.muted,
+  },
+
+  button: {
+    alignSelf: 'flex-start',
+    marginTop: 32,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: 8,
+    backgroundColor: colors.dark.accent,
+  },
+
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.dark.background,
   },
 });
