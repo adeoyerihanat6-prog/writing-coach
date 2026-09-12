@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '@/theme/colors';
 
 export default function HomeScreen() {
   return (
@@ -18,16 +19,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 24,
+    backgroundColor: colors.dark.background,
   },
 
   title: {
     fontSize: 32,
     fontWeight: '700',
+    color: colors.dark.text,
   },
 
   subtitle: {
     marginTop: 12,
     fontSize: 16,
     textAlign: 'center',
+    color: colors.dark.muted,
   },
 });
