@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+
 import { colors } from '@/theme/colors';
 
 export default function HomeScreen() {
@@ -9,6 +10,18 @@ export default function HomeScreen() {
       <Text style={styles.subtitle}>
         Become a better writer, one piece at a time.
       </Text>
+
+      <Pressable
+        style={styles.button}
+        onPress={() =>
+          Alert.alert(
+            'Coming soon',
+            'Your writing journey starts here.'
+          )
+        }
+      >
+        <Text style={styles.buttonText}>Start writing</Text>
+      </Pressable>
     </View>
   );
 }
@@ -33,5 +46,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: colors.dark.muted,
+  },
+
+  button: {
+    marginTop: 32,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    backgroundColor: colors.dark.accent,
+    borderRadius: 8,
+  },
+
+  buttonText: {
+    color: colors.dark.background,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
