@@ -1,4 +1,5 @@
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { colors } from '@/theme/colors';
 
@@ -13,12 +14,7 @@ export default function HomeScreen() {
 
       <Pressable
         style={styles.button}
-        onPress={() =>
-          Alert.alert(
-            'Coming soon',
-            'Your writing journey starts here.'
-          )
-        }
+        onPress={() => router.push('/onboarding')}
       >
         <Text style={styles.buttonText}>Start writing</Text>
       </Pressable>
