@@ -2,6 +2,8 @@ import express from 'express';
 
 const app = express();
 
+app.use(express.json());
+
 const PORT = 3000;
 
 app.get('/', (req, res) => {
@@ -13,6 +15,15 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
+  });
+});
+
+app.post('/api/analyze', (req, res) => {
+  const { writing } = req.body;
+
+  res.json({
+    message: 'Writing received',
+    writing,
   });
 });
 
