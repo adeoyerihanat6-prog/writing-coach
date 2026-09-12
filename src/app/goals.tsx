@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { useOnboarding } from '@/context/OnboardingContext';
 import { colors } from '@/theme/colors';
@@ -26,8 +27,22 @@ export default function GoalsScreen() {
     });
   }
 
+  function handleContinue() {
+    if (selectedGoals.length === 0) {
+      return;
+    }
+
+    router.push('/baseline');
+  }
+
+  const canContinue = selectedGoals.length > 0;
+
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
       <Text style={styles.title}>What do you want to improve?</Text>
 
       <Text style={styles.subtitle}>
@@ -60,19 +75,41 @@ export default function GoalsScreen() {
           );
         })}
       </View>
-    </View>
+
+      <Pressable
+        style={[
+          styles.continueButton,
+          !canContinue && styles.disabledButton,
+        ]}
+        onPress={handleContinue}
+        disabled={!canContinue}
+      >
+        <Text
+          style={[
+            styles.continueButtonText,
+            !canContinue && styles.disabledButtonText,
+          ]}
+        >
+          Continue
+        </Text>
+      </Pressable>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
     backgroundColor: colors.dark.background,
   },
 
+  content: {
+    padding: 24,
+    paddingTop: 80,
+    paddingBottom: 40,
+  },
+
   title: {
-    marginTop: 80,
     fontSize: 30,
     fontWeight: '700',
     color: colors.dark.text,
@@ -111,5 +148,29 @@ const styles = StyleSheet.create({
   selectedOptionText: {
     color: colors.dark.background,
     fontWeight: '600',
+  },
+
+  continueButton: {
+    marginTop: 32,
+    paddingVertical: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    backgroundColor: colors.dark.accent,
+  },
+
+  disabledButton: {
+    backgroundColor: colors.dark.surface,
+    borderWidth: 1,
+    borderColor: colors.dark.border,
+  },
+
+  continueButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.dark.background,
+  },
+
+  disabledButtonText: {
+    color: colors.dark.muted,
   },
 });
