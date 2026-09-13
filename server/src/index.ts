@@ -84,6 +84,22 @@ app.post('/api/submissions', async (req, res) => {
   res.status(201).json(submission);
 });
 
+app.post('/api/submissions/:submissionId/analysis', async (req, res) => {
+  const submissionId = Number(req.params.submissionId);
+
+  if (!Number.isInteger(submissionId)) {
+    return res.status(400).json({
+      error: 'A valid submissionId is required',
+    });
+  }
+
+  const analysis = await db.orm.public.Analysis.create({
+    submissionId,
+  });
+
+  res.status(201).json(analysis);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
