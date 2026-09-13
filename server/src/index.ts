@@ -1,6 +1,6 @@
 import express from 'express';
 import { db } from './prisma/db.js';
-import type { WritingAnalysis } from './types/analysis.js';
+import { writingAnalysisSchema } from './validation/analysis.js';
 
 const app = express();
 
@@ -91,7 +91,6 @@ app.post('/api/submissions', async (req, res) => {
 
 app.post('/api/submissions/:submissionId/analysis', async (req, res) => {
   const submissionId = Number(req.params.submissionId);
-  const analysisData = req.body as WritingAnalysis;
 
   if (!Number.isInteger(submissionId)) {
     return res.status(400).json({
@@ -99,17 +98,28 @@ app.post('/api/submissions/:submissionId/analysis', async (req, res) => {
     });
   }
 
+  const result = writingAnalysisSchema.safeParse(req.body);
+
+  if (!result.success) {
+    return res.status(400).json({
+      error: 'Invalid analysis data',
+      details: result.error.issues,
+    });
+  }
+
+  const analysisData = result.data;
+
   const analysis = await db.orm.public.Analysis.create({
-  submissionId,
-  scores: analysisData.scores,
-  strongestSkill: analysisData.strongestSkill.skill,
-  strongestExplanation: analysisData.strongestSkill.explanation,
-  focusSkill: analysisData.focusSkill.skill,
-  focusExplanation: analysisData.focusSkill.explanation,
-  observations: analysisData.observations,
-  lessonTitle: analysisData.lesson.title,
-  lessonContent: analysisData.lesson.content,
-});
+    submissionId,
+    scores: analysisData.scores,
+    strongestSkill: analysisData.strongestSkill.skill,
+    strongestExplanation: analysisData.strongestSkill.explanation,
+    focusSkill: analysisData.focusSkill.skill,
+    focusExplanation: analysisData.focusSkill.explanation,
+    observations: analysisData.observations,
+    lessonTitle: analysisData.lesson.title,
+    lessonContent: analysisData.lesson.content,
+  });
 
   res.status(201).json(analysis);
 });
