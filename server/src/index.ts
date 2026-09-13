@@ -51,6 +51,23 @@ app.get('/api/users', async (req, res) => {
   res.json(users);
 });
 
+app.post('/api/submissions', async (req, res) => {
+  const { userId, writing } = req.body;
+
+  if (!Number.isInteger(userId) || typeof writing !== 'string' || !writing.trim()) {
+    return res.status(400).json({
+      error: 'A valid userId and writing are required',
+    });
+  }
+
+  const submission = await db.orm.public.Submission.create({
+    userId,
+    writing,
+  });
+
+  res.status(201).json(submission);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
