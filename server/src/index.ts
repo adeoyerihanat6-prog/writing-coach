@@ -51,6 +51,22 @@ app.get('/api/users', async (req, res) => {
   res.json(users);
 });
 
+app.get('/api/users/:userId/submissions', async (req, res) => {
+  const userId = Number(req.params.userId);
+
+  if (!Number.isInteger(userId)) {
+    return res.status(400).json({
+      error: 'A valid userId is required',
+    });
+  }
+
+  const submissions = await db.orm.public.Submission
+    .where({ userId })
+    .all();
+
+  res.json(submissions);
+});
+
 app.post('/api/submissions', async (req, res) => {
   const { userId, writing } = req.body;
 
