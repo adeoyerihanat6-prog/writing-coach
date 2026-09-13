@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'40ba149eaf2c0bb5e46045a301ebcf145ce9c1432d044b11d1972fc170a66379'>;
+  StorageHashBase<'4f0a9cf098bea8a65b14c4c4ae9d3c404f3ac6066d46ca689c72ba3fa4e512ba'>;
 export type ExecutionHash =
   ExecutionHashBase<'63d1113b8eb8a93e6d81f9d645c9e5fe4c8da841e5137b01e1bc539afbce631b'>;
 export type ProfileHash =
@@ -245,6 +245,14 @@ export type FieldOutputTypes = {
     readonly Analysis: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly submissionId: CodecTypes['pg/int4@1']['output'];
+      readonly scores: CodecTypes['pg/json@1']['output'];
+      readonly strongestSkill: CodecTypes['pg/text@1']['output'];
+      readonly strongestExplanation: CodecTypes['pg/text@1']['output'];
+      readonly focusSkill: CodecTypes['pg/text@1']['output'];
+      readonly focusExplanation: CodecTypes['pg/text@1']['output'];
+      readonly observations: CodecTypes['pg/json@1']['output'];
+      readonly lessonTitle: CodecTypes['pg/text@1']['output'];
+      readonly lessonContent: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly Submission: {
@@ -268,6 +276,14 @@ export type FieldInputTypes = {
     readonly Analysis: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly submissionId: CodecTypes['pg/int4@1']['input'];
+      readonly scores: CodecTypes['pg/json@1']['input'];
+      readonly strongestSkill: CodecTypes['pg/text@1']['input'];
+      readonly strongestExplanation: CodecTypes['pg/text@1']['input'];
+      readonly focusSkill: CodecTypes['pg/text@1']['input'];
+      readonly focusExplanation: CodecTypes['pg/text@1']['input'];
+      readonly observations: CodecTypes['pg/json@1']['input'];
+      readonly lessonTitle: CodecTypes['pg/text@1']['input'];
+      readonly lessonContent: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly Submission: {
@@ -290,7 +306,15 @@ export type StorageColumnTypes = {
   readonly public: {
     readonly analysis: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly focusExplanation: CodecTypes['pg/text@1']['output'];
+      readonly focusSkill: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly lessonContent: CodecTypes['pg/text@1']['output'];
+      readonly lessonTitle: CodecTypes['pg/text@1']['output'];
+      readonly observations: CodecTypes['pg/json@1']['output'];
+      readonly scores: CodecTypes['pg/json@1']['output'];
+      readonly strongestExplanation: CodecTypes['pg/text@1']['output'];
+      readonly strongestSkill: CodecTypes['pg/text@1']['output'];
       readonly submissionId: CodecTypes['pg/int4@1']['output'];
     };
     readonly submission: {
@@ -313,7 +337,15 @@ export type StorageColumnInputTypes = {
   readonly public: {
     readonly analysis: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly focusExplanation: CodecTypes['pg/text@1']['input'];
+      readonly focusSkill: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly lessonContent: CodecTypes['pg/text@1']['input'];
+      readonly lessonTitle: CodecTypes['pg/text@1']['input'];
+      readonly observations: CodecTypes['pg/json@1']['input'];
+      readonly scores: CodecTypes['pg/json@1']['input'];
+      readonly strongestExplanation: CodecTypes['pg/text@1']['input'];
+      readonly strongestSkill: CodecTypes['pg/text@1']['input'];
       readonly submissionId: CodecTypes['pg/int4@1']['input'];
     };
     readonly submission: {
@@ -356,6 +388,14 @@ export namespace Models {
   export type public_Analysis = {
     id: CodecTypes['pg/int4@1']['output'];
     submissionId: CodecTypes['pg/int4@1']['output'];
+    scores: CodecTypes['pg/json@1']['output'];
+    strongestSkill: CodecTypes['pg/text@1']['output'];
+    strongestExplanation: CodecTypes['pg/text@1']['output'];
+    focusSkill: CodecTypes['pg/text@1']['output'];
+    focusExplanation: CodecTypes['pg/text@1']['output'];
+    observations: CodecTypes['pg/json@1']['output'];
+    lessonTitle: CodecTypes['pg/text@1']['output'];
+    lessonContent: CodecTypes['pg/text@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     submission: public_Submission;
     readonly [RelationKeys]?: 'submission';
@@ -402,6 +442,46 @@ type ContractBase = Omit<
                 readonly submissionId: {
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly scores: {
+                  readonly nativeType: 'json';
+                  readonly codecId: 'pg/json@1';
+                  readonly nullable: false;
+                };
+                readonly strongestSkill: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly strongestExplanation: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly focusSkill: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly focusExplanation: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly observations: {
+                  readonly nativeType: 'json';
+                  readonly codecId: 'pg/json@1';
+                  readonly nullable: false;
+                };
+                readonly lessonTitle: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly lessonContent: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
                 readonly createdAt: {
@@ -557,6 +637,38 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
+              readonly scores: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
+              };
+              readonly strongestSkill: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly strongestExplanation: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly focusSkill: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly focusExplanation: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly observations: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
+              };
+              readonly lessonTitle: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly lessonContent: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -585,6 +697,14 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly id: { readonly column: 'id' };
                 readonly submissionId: { readonly column: 'submissionId' };
+                readonly scores: { readonly column: 'scores' };
+                readonly strongestSkill: { readonly column: 'strongestSkill' };
+                readonly strongestExplanation: { readonly column: 'strongestExplanation' };
+                readonly focusSkill: { readonly column: 'focusSkill' };
+                readonly focusExplanation: { readonly column: 'focusExplanation' };
+                readonly observations: { readonly column: 'observations' };
+                readonly lessonTitle: { readonly column: 'lessonTitle' };
+                readonly lessonContent: { readonly column: 'lessonContent' };
                 readonly createdAt: { readonly column: 'createdAt' };
               };
             };

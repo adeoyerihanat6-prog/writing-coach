@@ -20,8 +20,16 @@ model Submission {
 }
 
 model Analysis {
-  id            Int        @id @default(autoincrement())
-  submission    Submission @relation(fields: [submissionId], references: [id])
-  submissionId  Int        @unique
-  createdAt     TimestamptzString @default(now())
+  id                   Int        @id @default(autoincrement())
+  submission           Submission @relation(fields: [submissionId], references: [id])
+  submissionId         Int        @unique
+  scores               Json
+  strongestSkill       String
+  strongestExplanation String
+  focusSkill           String
+  focusExplanation     String
+  observations         Json
+  lessonTitle          String
+  lessonContent        String
+  createdAt            TimestamptzString @default(now())
 }
