@@ -45,7 +45,11 @@ app.post('/api/users', async (req, res) => {
   res.status(201).json(user);
 });
 
-  
+app.get('/api/users', async (req, res) => {
+  const users = await db.orm.public.User.all();
+
+  res.json(users);
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
