@@ -147,6 +147,39 @@ app.get('/api/submissions/:submissionId/analysis', async (req, res) => {
   res.json(analysis);
 });
 
+app.post('/api/submissions/:submissionId/analyze', async (req, res) => {
+  const submissionId = Number(req.params.submissionId);
+
+  if (!Number.isInteger(submissionId)) {
+    return res.status(400).json({
+      error: 'A valid submissionId is required',
+    });
+  }
+
+  const submission = await db.orm.public.Submission
+    .where({ id: submissionId })
+    .first();
+
+  if (!submission) {
+    return res.status(404).json({
+      error: 'Submission not found',
+    });
+  }
+
+  try {
+    const analysis = await analyzeWriting(submission.writing);
+
+    res.json(analysis);
+  } catch (error) {
+    console.error('AI analysis failed:', error);
+
+    res.status(500).json({
+      error: 'AI analysis failed',
+    });
+  }
+});
+
+// Temporary test route
 app.post('/api/test-ai', async (req, res) => {
   try {
     const { writing } = req.body;
