@@ -2,6 +2,7 @@ import express from 'express';
 import { db } from './prisma/db.js';
 import { writingAnalysisSchema } from './validation/analysis.js';
 import { analyzeWriting } from './services/ai/analysis.js';
+import { saveAnalysis } from './services/analysis.js';
 
 const app = express();
 
@@ -167,9 +168,14 @@ app.post('/api/submissions/:submissionId/analyze', async (req, res) => {
   }
 
   try {
-    const analysis = await analyzeWriting(submission.writing);
+    const analysisData = await analyzeWriting(submission.writing);
 
-    res.json(analysis);
+const savedAnalysis = await saveAnalysis(
+  submissionId,
+  analysisData
+);
+
+res.status(201).json(savedAnalysis);
   } catch (error) {
     console.error('AI analysis failed:', error);
 
