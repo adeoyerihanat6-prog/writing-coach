@@ -1,7 +1,14 @@
-import type { WritingAnalysis } from '../../types/analysis.js';
+import OpenAI from 'openai';
 
-export async function analyzeWriting(
-  writing: string
-): Promise<WritingAnalysis> {
-  throw new Error('AI analysis is not implemented yet');
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export async function analyzeWriting(writing: string) {
+  console.log('OpenAI client ready ✅');
+  console.log('Writing received:', writing);
+
+  return {
+    message: 'AI analysis coming next',
+  };
 }
