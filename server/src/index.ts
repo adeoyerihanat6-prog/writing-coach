@@ -10,17 +10,20 @@ app.use(express.json());
 
 const PORT = 3000;
 
+
 app.get('/', (req, res) => {
   res.json({
     message: 'Writing Coach API is running',
   });
 });
 
+
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
   });
 });
+
 
 app.post('/api/analyze', (req, res) => {
   const { writing } = req.body;
@@ -30,6 +33,7 @@ app.post('/api/analyze', (req, res) => {
     writing,
   });
 });
+
 
 app.post('/api/users', async (req, res) => {
   const { email, username } = req.body;
@@ -48,11 +52,13 @@ app.post('/api/users', async (req, res) => {
   res.status(201).json(user);
 });
 
+
 app.get('/api/users', async (req, res) => {
   const users = await db.orm.public.User.all();
 
   res.json(users);
 });
+
 
 app.get('/api/users/:userId/submissions', async (req, res) => {
   const userId = Number(req.params.userId);
@@ -69,6 +75,7 @@ app.get('/api/users/:userId/submissions', async (req, res) => {
 
   res.json(submissions);
 });
+
 
 app.post('/api/submissions', async (req, res) => {
   const { userId, writing } = req.body;
@@ -126,6 +133,7 @@ app.post('/api/submissions/:submissionId/analysis', async (req, res) => {
   res.status(201).json(analysis);
 });
 
+
 app.get('/api/submissions/:submissionId/analysis', async (req, res) => {
   const submissionId = Number(req.params.submissionId);
 
@@ -147,6 +155,7 @@ app.get('/api/submissions/:submissionId/analysis', async (req, res) => {
 
   res.json(analysis);
 });
+
 
 app.post('/api/submissions/:submissionId/analyze', async (req, res) => {
   const submissionId = Number(req.params.submissionId);
@@ -170,12 +179,12 @@ app.post('/api/submissions/:submissionId/analyze', async (req, res) => {
   try {
     const analysisData = await analyzeWriting(submission.writing);
 
-const savedAnalysis = await saveAnalysis(
-  submissionId,
-  analysisData
-);
+    const savedAnalysis = await saveAnalysis(
+      submissionId,
+      analysisData
+    );
 
-res.status(201).json(savedAnalysis);
+    res.status(201).json(savedAnalysis);
   } catch (error) {
     console.error('AI analysis failed:', error);
 
@@ -185,7 +194,7 @@ res.status(201).json(savedAnalysis);
   }
 });
 
-// Temporary test route
+
 app.post('/api/test-ai', async (req, res) => {
   try {
     const { writing } = req.body;
@@ -198,6 +207,26 @@ app.post('/api/test-ai', async (req, res) => {
 
     res.status(500).json({
       error: 'AI analysis failed',
+    });
+  }
+});
+
+
+app.post('/api/test-save-analysis', async (req, res) => {
+  try {
+    const { submissionId, analysis } = req.body;
+
+    const savedAnalysis = await saveAnalysis(
+      submissionId,
+      analysis
+    );
+
+    res.status(201).json(savedAnalysis);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: 'Failed to save analysis',
     });
   }
 });
