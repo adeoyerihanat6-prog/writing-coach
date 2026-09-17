@@ -16,6 +16,7 @@ import { colors } from '@/theme/colors';
 
 export default function BaselineScreen() {
   const [writing, setWriting] = useState('');
+  const [error, setError] = useState('');
 
   const wordCount = writing.trim()
     ? writing.trim().split(/\s+/).length
@@ -27,6 +28,8 @@ export default function BaselineScreen() {
     if (!canContinue) {
       return;
     }
+
+    setError('');
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/submissions`, {
@@ -43,8 +46,29 @@ export default function BaselineScreen() {
       const data = await response.json();
 
       console.log('Submission created:', data);
+
+      const analysisResponse = await fetch(
+        `${API_BASE_URL}/api/submissions/${data.id}/analyze`,
+        {
+          method: 'POST',
+        }
+      );
+
+      const analysisData = await analysisResponse.json();
+
+      console.log('Analysis received:', analysisData);
+
+      if (!analysisResponse.ok) {
+        setError(
+          'Your writing was saved, but the coach could not analyze it right now. Please try again later.'
+        );
+      }
     } catch (error) {
-      console.error('Failed to create submission:', error);
+      console.error('Failed to submit writing:', error);
+
+      setError(
+        'Your writing could not be submitted right now. Please check your connection and try again.'
+      );
     }
   }
 
@@ -103,6 +127,8 @@ export default function BaselineScreen() {
 
         <View style={styles.composerFooter}>
           <Text style={styles.wordCount}>{wordCount} words</Text>
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <Pressable
             style={[
@@ -238,6 +264,14 @@ const styles = StyleSheet.create({
 
   wordCount: {
     fontSize: 13,
+    color: colors.dark.muted,
+  },
+
+  errorText: {
+    flex: 1,
+    marginRight: 12,
+    fontSize: 13,
+    lineHeight: 19,
     color: colors.dark.muted,
   },
 
