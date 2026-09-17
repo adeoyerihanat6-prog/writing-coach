@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   KeyboardAvoidingView,
   Platform,
@@ -9,11 +10,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { router } from 'expo-router';
 
+import { API_BASE_URL } from '@/lib/api';
 import { colors } from '@/theme/colors';
-
-
 
 export default function BaselineScreen() {
   const [writing, setWriting] = useState('');
@@ -22,14 +21,31 @@ export default function BaselineScreen() {
     ? writing.trim().split(/\s+/).length
     : 0;
 
- const canContinue = wordCount > 0;
+  const canContinue = wordCount > 0;
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!canContinue) {
       return;
     }
 
-    router.push('/analysis');
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/submissions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: 1,
+          writing,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log('Submission created:', data);
+    } catch (error) {
+      console.error('Failed to create submission:', error);
+    }
   }
 
   return (
