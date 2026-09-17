@@ -1,66 +1,65 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { router } from 'expo-router';
 
 import { colors } from '@/theme/colors';
 
-export default function OnboardingScreen() {
+export default function AuthScreen() {
   return (
     <View style={styles.container}>
-      
       <View style={styles.header}>
         <View style={styles.brandMark}>
           <View style={styles.brandLine} />
           <Text style={styles.brand}>MARGIN</Text>
         </View>
 
-        <Text style={styles.eyebrow}>LET'S BEGIN</Text>
+        <Text style={styles.eyebrow}>YOUR WRITING SPACE</Text>
       </View>
 
-      
-      <View style={styles.hero}>
+      <View style={styles.content}>
         <Text style={styles.title}>
-          Let's work on
+          Make this
           {'\n'}
-          your writing.
+          <Text style={styles.titleAccent}>yours.</Text>
         </Text>
 
         <Text style={styles.subtitle}>
-          You don't need to be a "good writer" to start.
-          You just need something to say.
+          Create an account so Margin can remember what
+          you're working on and track how your writing changes
+          over time.
         </Text>
 
-        <View style={styles.loop}>
-          <Text style={styles.loopLabel}>THE MARGIN METHOD</Text>
+        <View style={styles.form}>
+          <View style={styles.field}>
+            <Text style={styles.label}>EMAIL</Text>
 
-          <View style={styles.loopItem}>
-            <View style={styles.dot} />
-            <Text style={styles.loopText}>Write</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="you@example.com"
+              placeholderTextColor={colors.dark.muted}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
           </View>
 
-          <View style={styles.loopItem}>
-            <View style={styles.dot} />
-            <Text style={styles.loopText}>Get coached</Text>
-          </View>
+          <View style={styles.field}>
+            <Text style={styles.label}>PASSWORD</Text>
 
-          <View style={styles.loopItem}>
-            <View style={styles.dot} />
-            <Text style={styles.loopText}>Practice</Text>
-          </View>
-
-          <View style={styles.loopItem}>
-            <View style={styles.dot} />
-            <Text style={styles.loopText}>Come back better</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Create a password"
+              placeholderTextColor={colors.dark.muted}
+              secureTextEntry
+            />
           </View>
         </View>
       </View>
 
-      
       <View style={styles.footer}>
         <Pressable
           style={styles.button}
-          onPress={() => router.push('/auth')}
+          onPress={() => router.push('/goals')}
         >
-          <Text style={styles.buttonText}>Let's begin</Text>
+          <Text style={styles.buttonText}>Create account</Text>
           <Text style={styles.arrow}>→</Text>
         </Pressable>
 
@@ -68,6 +67,8 @@ export default function OnboardingScreen() {
           Already have an account?{' '}
           <Text style={styles.signIn}>Sign in</Text>
         </Text>
+
+        <Text style={styles.note}>Your writing stays yours.</Text>
       </View>
     </View>
   );
@@ -107,70 +108,66 @@ const styles = StyleSheet.create({
   },
 
   eyebrow: {
-    fontSize: 10,
-    fontWeight: '600',
-    letterSpacing: 2,
-    color: colors.dark.muted,
-  },
-
-  hero: {
-    marginTop: 20,
-    marginBottom: 24,
-  },
-
-  title: {
-    fontSize: 35,
-    lineHeight: 42,
-    fontWeight: '700',
-    color: colors.dark.text,
-  },
-
-  subtitle: {
-    maxWidth: 340,
-    marginTop: 16,
-    fontSize: 15,
-    lineHeight: 23,
-    color: colors.dark.muted,
-  },
-
-  loop: {
-    marginTop: 24,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: colors.dark.border,
-  },
-
-  loopLabel: {
-    marginBottom: 12,
     fontSize: 9,
     fontWeight: '600',
     letterSpacing: 1.8,
     color: colors.dark.muted,
   },
 
-  loopItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 7,
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingVertical: 24,
   },
 
-  dot: {
-    width: 4,
-    height: 4,
-    marginRight: 11,
-    borderRadius: 2,
-    backgroundColor: colors.dark.accent,
-  },
-
-  loopText: {
-    fontSize: 14,
-    lineHeight: 19,
+  title: {
+    fontSize: 38,
+    lineHeight: 46,
+    fontWeight: '700',
     color: colors.dark.text,
+  },
+
+  titleAccent: {
+    color: colors.dark.accent,
+  },
+
+  subtitle: {
+    maxWidth: 340,
+    marginTop: 18,
+    fontSize: 15,
+    lineHeight: 23,
+    color: colors.dark.muted,
+  },
+
+  form: {
+    marginTop: 30,
+    gap: 18,
+  },
+
+  field: {
+    gap: 8,
+  },
+
+  label: {
+    fontSize: 9,
+    fontWeight: '600',
+    letterSpacing: 1.8,
+    color: colors.dark.muted,
+  },
+
+  input: {
+    height: 50,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: colors.dark.border,
+    borderRadius: 8,
+    fontSize: 15,
+    color: colors.dark.text,
+    backgroundColor: colors.dark.surface,
   },
 
   footer: {
     width: '100%',
-    paddingTop: 8,
   },
 
   button: {
@@ -205,5 +202,12 @@ const styles = StyleSheet.create({
   signIn: {
     fontWeight: '600',
     color: colors.dark.text,
+  },
+
+  note: {
+    marginTop: 16,
+    textAlign: 'center',
+    fontSize: 11,
+    color: colors.dark.muted,
   },
 });
